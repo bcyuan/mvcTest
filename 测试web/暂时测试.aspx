@@ -9,63 +9,38 @@
     <script src="Scripts/jquery-1.10.2.js"></script>
     <script src="Scripts/bootstrap/bootstrap.js"></script>
     <link href="Scripts/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .upload div{
+            margin:25px;
+            line-height:20px;
+        }
+          .uploadc {
+            float:left;
+            width:45%;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="ceshi">
-            <div>ceshi1</div>
-            <div>ceshi2</div>
-            <div>ceshi3</div>
-            <div class="ceshi2">
-                <div>ceshi4</div>
-                <div>ceshi5</div>
-                <div>ceshi6</div>
-            </div>
+        <div class="upload">
+            <div ><span>填写检测报告编号</span><input type="text" /></div>
+            <div ><span class="uploadc">上传检测报告</span><input class="uploadc" type="file" /></div>
+            <a class="imageName" href="https://exp.bdstatic.com/static/common-jquery/widget/search-box/img/logo_83ae7e2.png"></a>
+            <img class="qr_img" src="https://exp.bdstatic.com/static/common-jquery/widget/search-box/img/logo_83ae7e2.png" alt="Alternate Text" />
         </div>
-        <div class="ceshi2">
-            <div>ceshi7</div>
-            <div>ceshi8</div>
-            <div>ceshi9</div>
-        </div>
-        <div class="ceshi13">
-            <input type="checkbox" value="1" checked="checked" />
-            <input type="checkbox" value="2" />
-            <input type="checkbox" value="3" />
-            <input type="checkbox" value="4" />
-            <div class="ceshi3">
-                3
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="form-inline">
-                <div  class="form-group">
-                    <input />
-                </div>
-                <div  class="form-group">
-                    <input />
-                </div>
-            </div>
-        </div>
-
+        <asp:Button Text="text" runat="server" OnClick="Unnamed1_Click"   />
     </form>
-    <div class="form-inline">
-        <div class="form-group">
-            <label for="exampleInputName2">Name</label>
-            <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe"/>
-        </div>
-        <div class="form-group">
-            <label for="exampleInputEmail2">Email</label>
-            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com"/>
-        </div>
-        <button type="submit" class="btn btn-default">Send invitation</button>
-    </div>
+    <div class="down_qr"   >666666</div>
+    <input class="sutmit_btn"  type="button" value="baocun"  />
+    
 </body>
 </html>
 <script>
-    debugger
+    
     var numbers = [4, 9, 16, 25];
-  var cc=  numbers.map(Math.sqrt);
-   var bb= numbers.map(function (item) {
-       return item + 1;
+    var cc = numbers.map(Math.sqrt);
+    var bb = numbers.map(function (item) {
+        return item + 1;
     });
 </script>
+ 

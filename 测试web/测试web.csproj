@@ -304,7 +304,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="iframe.aspx" />
-    <Content Include="img\1.jpg" />
+    <Content Include="1zhodf保.jpg" />
+    <Content Include="img\1zhodf保.png" />
     <Content Include="Libs\AppLibrary.dll" />
     <Content Include="Main.aspx" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\css\bootstrap-theme.css" />
