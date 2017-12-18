@@ -34,6 +34,8 @@ namespace 测试web
         string username = "";
         protected void Unnamed1_Click(object sender, EventArgs e)
         {
+            Button Btn = sender as Button;
+            string commandArgument = Btn.CommandArgument.ToString();
             //生成图片  
             FileDownload(Server.MapPath("1zhodf保.jpg"));
             //FileDownload(@"https://exp.bdstatic.com/static/common-jquery/widget/search-box/img/logo_83ae7e2.png");

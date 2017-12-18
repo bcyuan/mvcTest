@@ -10,7 +10,7 @@
 namespace 测试web {
     
     
-    public partial class 暂时测试 {
+    public partial class 压缩文件2 {
         
         /// <summary>
         /// form1 控件。
@@ -20,14 +20,5 @@ namespace 测试web {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
-        /// ceshi 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ceshi;
     }
 }
