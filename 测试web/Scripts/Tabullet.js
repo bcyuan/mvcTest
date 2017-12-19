@@ -23,6 +23,7 @@
         var idMap = $(this).find('thead > tr').first().attr('data-tabullet-map');
         var metadata = [];
         columns.each(function (i, v) {
+            debugger
             metadata.push({
                 map: $(v).attr('data-tabullet-map'),
                 readonly: $(v).attr('data-tabullet-readonly'),

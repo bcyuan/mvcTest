@@ -236,6 +236,13 @@
     <Compile Include="代码优化.aspx.designer.cs">
       <DependentUpon>代码优化.aspx</DependentUpon>
     </Compile>
+    <Compile Include="全方案.aspx.cs">
+      <DependentUpon>全方案.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="全方案.aspx.designer.cs">
+      <DependentUpon>全方案.aspx</DependentUpon>
+    </Compile>
     <Compile Include="动态增删改.aspx.cs">
       <DependentUpon>动态增删改.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -277,6 +284,13 @@
     </Compile>
     <Compile Include="测试jquery的on事件.aspx.designer.cs">
       <DependentUpon>测试jquery的on事件.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="测试js字典表.aspx.cs">
+      <DependentUpon>测试js字典表.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="测试js字典表.aspx.designer.cs">
+      <DependentUpon>测试js字典表.aspx</DependentUpon>
     </Compile>
     <Compile Include="测试Table合并.aspx.cs">
       <DependentUpon>测试Table合并.aspx</DependentUpon>
@@ -351,6 +365,7 @@
     <Content Include="Scripts\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\jquery.bydic.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.sliphover.js" />
     <Content Include="Scripts\messages_zh.js" />
@@ -372,12 +387,14 @@
     <Content Include="WF_slipHover.aspx" />
     <Content Include="WF_validate.aspx" />
     <Content Include="代码优化.aspx" />
+    <Content Include="全方案.aspx" />
     <Content Include="动态增删改.aspx" />
     <Content Include="压缩文件.aspx" />
     <Content Include="压缩文件2.aspx" />
     <Content Include="学习插件.aspx" />
     <Content Include="暂时测试.aspx" />
     <Content Include="测试jquery的on事件.aspx" />
+    <Content Include="测试js字典表.aspx" />
     <Content Include="测试Table合并.aspx" />
     <Content Include="测试打印.aspx" />
     <Content Include="测试自制树表.aspx" />

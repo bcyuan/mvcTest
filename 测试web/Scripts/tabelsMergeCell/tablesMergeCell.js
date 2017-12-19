@@ -12,7 +12,7 @@
         var key = opts.key;
         var cols = opts.cols;
         var rows = opts.rows;
-        return this.each(function () {
+        return this.each(function (){ 
 
             if (rows == null) {
                 for (var i = 0; cols[i] != undefined; i++) {
