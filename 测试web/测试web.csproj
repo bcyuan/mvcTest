@@ -200,6 +200,13 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="MyNameTransfom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="select2多选.aspx.cs">
+      <DependentUpon>select2多选.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="select2多选.aspx.designer.cs">
+      <DependentUpon>select2多选.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="tabullet演示.aspx.cs">
       <DependentUpon>tabullet演示.aspx</DependentUpon>
@@ -365,10 +372,15 @@
     <Content Include="Scripts\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\jquery-1.3.2.min.js" />
     <Content Include="Scripts\jquery.bydic.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.sliphover.js" />
     <Content Include="Scripts\messages_zh.js" />
+    <Content Include="Scripts\select2\select2.css" />
+    <Content Include="Scripts\select2\select2.js" />
+    <Content Include="Scripts\select2\select2.png" />
+    <Content Include="Scripts\select2\select2_locale_zh-CN.js" />
     <Content Include="Scripts\tabelsMergeCell\base.css" />
     <Content Include="Scripts\tabelsMergeCell\jquery.js" />
     <Content Include="Scripts\tabelsMergeCell\tablesMergeCell - 备份.js" />
@@ -377,6 +389,7 @@
     <Content Include="Scripts\我的插件-元素块的增删改.js" />
     <Content Include="Scripts\自制js插件.js" />
     <Content Include="Scripts\MyJS.js" />
+    <Content Include="select2多选.aspx" />
     <Content Include="Style\cmxform.css" />
     <Content Include="Style\cmxformTemplate.css" />
     <Content Include="Style\core.css" />
