@@ -6,7 +6,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <link href="Scripts/tabelsMergeCell/base.css" rel="stylesheet" />
+    <%--<link href="Scripts/tabelsMergeCell/base.css" rel="stylesheet" />--%>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -103,6 +103,26 @@
                     <td>2kg/床</td>
                     <td>签约成功-已备案</td>
                 </tr>
+                <tr class="tab2">
+                    <td>2017年11月31日</td>
+                    <td>安徽嘉德纺织有限公司3</td>
+                    <td>B级盖棉胎</td>
+                    <td>2100mm*1500mm</td>
+                    <td>4000kg</td>
+                    <td>2000床</td>
+                    <td>2kg/床</td>
+                    <td>签约成功-已备案</td>
+                </tr>
+                <tr class="tab2">
+                    <td>2017年11月31日</td>
+                    <td>安徽嘉德纺织有限公司3</td>
+                    <td>B级盖棉胎</td>
+                    <td>2100mm*1500mm</td>
+                    <td>4000kg</td>
+                    <td>2000床</td>
+                    <td>2kg/床</td>
+                    <td>签约成功-已备案</td>
+                </tr>
             </table>
         </div>
         <hr />
@@ -116,17 +136,17 @@
 <script type="text/javascript">
     $(function () {
         $('#process-demo-1').tablesMergeCell({
-            cols: [0, 1, 7]
+            cols: [0]
         });
 
-        $('#process-demo-2').tablesMergeCell({
-            cols: [0, 1, 7]
-        });
+        //$('#process-demo-2').tablesMergeCell({
+        //    cols: [0, 1, 7]
+        //});
 
-        $('#process-demo-3').tablesMergeCell({
-            automatic: false,
-            cols: [0, 3],
-            rows: [[3, 4, 5], [6, 7]]//第0列的345行，第3列的67行合并
-        });
+        //$('#process-demo-3').tablesMergeCell({
+        //    automatic: false,
+        //    cols: [0, 3],
+        //    rows: [[3, 4, 5], [6, 7]]//第0列的345行，第3列的67行合并
+        //});
     });
 </script>
