@@ -1,0 +1,98 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QQ JS省市区三级联动</title>
+    <!-- 使用QQ的省市区数据 -->
+    <meta charset="UTF-8">
+    <link href="../Content/layui/css/layui.css" rel="stylesheet" />
+    <!--
+    <script type="text/javascript" src="http://ip.qq.com/js/geo.js"></script>
+    -->
+    <script src="area.js"></script>
+    <script src="../Content/layui/layui.js"></script>
+</head>
+<body onload="setup();">
+    <!--<form name="shareip" action="#" method="post">
+        <select class="select" name="province" id="s1">
+            <option></option>
+        </select>
+        <select class="select" name="city" id="s2">
+            <option></option>
+        </select>
+        <select class="select" name="town" id="s3">
+            <option></option>
+        </select>
+        <input id="address" name="address" type="hidden" value="" />
+        <input onclick="alert(promptinfo())" type="submit" value="提交" />
+    </form>-->
+
+
+    <!--<div class="layui-input-inline">
+        <select nclass="select" name="province" id="s1" lay-filter="provid">
+            <option value="">请选择省</option>
+        </select>
+    </div>
+    <div class="layui-input-inline">
+        <select nclass="select" name="province" id="s2" lay-filter="cityid">
+            <option value="">请选择市</option>
+        </select>
+    </div>
+    <div class="layui-input-inline">
+        <select class="select" name="province" id="s3" lay-filter="areaid">
+            <option value="">请选择县/区</option>
+        </select>
+    </div>-->
+
+    <!--<form name="shareip" action="#" method="post">
+        <select class="select" name="province" id="s1">
+            <option></option>
+        </select>
+        <select class="select" name="city" id="s2">
+            <option></option>
+        </select>
+        <select class="select" name="town" id="s3">
+            <option></option>
+        </select>
+        <input id="address" name="address" type="hidden" value="" />
+        <input onclick="alert(promptinfo())" type="submit" value="提交" />
+    </form>-->
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">行内选择框</label>
+            <div class="layui-input-inline">
+                <select class="select" lay-filter="province" name="province" id="s1">
+                    
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select class="select" lay-filter="city" name="city" id="s2"></select>
+            </div>
+            <div class="layui-input-inline">
+                <select class="select" name="town" id="s3"></select>
+            </div>
+        </div>
+        </form>
+        <script type="text/javascript">
+            layui.use(['form', 'layedit','jquery', 'laydate'], function () {
+                var form = layui.form;
+                var $ = layui.jquery;
+                form.on('select(province)', function (data) {
+                    debugger
+                    $("#s1 option[text=" + data.value + "]").attr("selected", "selected");
+                    $("#s1").trigger("onchange");
+                    form.render(); //更新全部
+                });
+            });
+            function promptinfo() {
+                var address = "";
+                var s1 = document.getElementById('s1').value;
+                var s2 = document.getElementById('s2').value;
+                var s3 = document.getElementById('s3').value;
+                address = "下拉框选中的地址：" + s1 + "," + s2 + "," + s3;
+                return address;
+            }
+        </script>
+</body>
+</html>
