@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<input type="button" onclick="btn_export32()" name="name" value="sdfasdf " />
+
+<script>
+    function btn_export() {
+
+        window.location.href = '@Url.Action("ToExcel", "Export")';
+    }
+    function btn_export3() {
+
+        window.location.href = '@Url.Action("ToExcel3", "Export")';
+    }
+    function btn_export2() {
+        $.ajax({
+            url: "@Url.Action("ToExcel", "Export")",
+            async: false,
+            dataType: 'text',
+            data: {},
+            success: function (data) {
+
+                grade = data;
+            },
+            error: function () {
+
+            }
+        });
+    }
+    function btn_export32() {
+        $.ajax({
+            url: "@Url.Action("ToExcel3", "Export")",
+            async: false,
+            dataType: 'text',
+            data: {},
+            success: function (data) {
+    debugger
+                grade = data;
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
