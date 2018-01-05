@@ -1,0 +1,685 @@
+﻿@using KDZR.Infrastructure
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Form.cshtml";
+}
+@Html.Hidden("beforeSelect", "")
+<script src="~/Content/js/localResizeIMG/lrz.all.bundle.js"></script>
+<link href="~/Content/css/style.css" rel="stylesheet" />
+<style>
+    .borderLeft {
+        border-left: 1px #9c9898 solid;
+    }
+
+    .borderBottom {
+        border-bottom: 1px #9c9898 solid;
+    }
+
+    .OrangeColor {
+        color: #ff6600;
+    }
+
+    .fontSize16 {
+        font-size: 16px;
+    }
+
+    .dormName {
+        border: 1px #9c9898 solid;
+        padding: 3px;
+        margin: 10px;
+    }
+
+    .dormList {
+        margin: 3px;
+    }
+
+    .minus, .minusBedding {
+        cursor: pointer;
+        color: #af5b4c;
+    }
+
+    .iptmargin {
+        margin: 10px;
+    }
+
+    .form tr {
+        line-height: 40px;
+    }
+
+    .table_room tr {
+        border-bottom: 1px #9c9898 dashed;
+    }
+</style>
+<script>
+    $(function () {
+
+        init();
+        linkage();
+    });
+    function linkage() {
+        $("#CAMPUS_ID").change(function () {
+            var campusId = $("#CAMPUS_ID").val();
+            $("#AREA_ID").html("<option value=\"\">全部生活区</option>");
+            $("#AREA_ID").bindSelect({
+                url: "@Url.Action("GetAreasByTenantId","Room")?campusID=" + campusId
+            });
+        });
+        $("#AREA_ID").change(function () {
+            var areaId = $("#AREA_ID").val();
+            $("#BUILDING_ID").html("<option value=\"\">全部楼栋</option>");
+            $("#BUILDING_ID").bindSelect({
+                url: "@Url.Action("GetBuildByTenantId", "Room")?areaID=" + areaId,
+                id: "BUILDING_ID",
+                text: "BUILDING_NAME"
+            });
+        });
+        // 楼栋类型联动宿舍类型
+        $("#BUILDING_ID").change(function () {
+            var BUILDING_ID = $("#BUILDING_ID").val();
+            $("#DORM_TYPE").html("");
+            $("#DORM_TYPE").bindSelect({
+                url: "@Url.Action("GetPurpose", "Room")?BUILDING_ID=" + BUILDING_ID,
+                id: "CODE_NBR",
+                text: "CODE_NAME"
+            });
+        });
+        // 自动生成楼层
+        $("#BUILDING_ID").change(function () {
+            
+            var BUILDING_ID = $("#BUILDING_ID").val();
+            $("#FLOOR_NBR").html("<option value=\"-1\">  自动生成楼层</option>");
+            $("#FLOOR_NBR").bindSelect({
+                url: "@Url.Action("GetFloorNBRByBuildID", "Room")?BuildID=" + BUILDING_ID,
+                id: "id",
+                text: "text"
+            });
+        });
+        //$("#BUILDING_ID").change(function () {
+        //    var buildId = $("#BUILDING_ID").val();
+
+        //});
+    };
+    function init() {
+        $(".minusBedding").on("click", function () {
+            $(this).parent().parent().remove();
+        });
+        //绑定校区
+        $("#CAMPUS_ID").bindSelect({
+            url: "@Url.Action("GetCampusByTenantId", "Room")",
+            id: "CAMPUS_ID",
+            text: "CAMPUS_NAME"
+        });
+        //绑定生活区
+        $("#AREA_ID").bindSelect({
+            url: "@Url.Action("GetAreasByTenantId","Room")"
+        });
+        //绑定楼栋
+        $("#BUILDING_ID").bindSelect({
+            url: "@Url.Action("GetBuildByTenantId","Room")",
+            id: "BUILDING_ID",
+            text: "BUILDING_NAME"
+        });
+        @*//绑定楼层
+        $("#FLOOR_NBR").bindSelect({
+            url: "@Url.Action("GetFloorNBRByBuildID", "Room")",
+            id: "id",
+            text: "text"
+        });*@
+        //绑定用途
+        $("#PURPOSE").bindSelect({
+            url: "@Url.Action("GetPurpose", "Room")",
+            id: "CODE_NBR",
+            text: "CODE_NAME"
+        });
+        //绑定类型
+        $("#DORM_TYPE").bindSelect({
+            url: "@Url.Action("GetDormType","Room")",
+            id: "CODE_NBR",
+            text: "CODE_NAME"
+        });
+        //绑定布局
+        $("#LAYOUT").bindSelect({
+            url: "@Url.Action("GetLayout","Room")",
+            id: "CODE_NBR",
+            text: "CODE_NAME"
+        });
+        //绑定标签
+        $("#LABEL").bindSelect({
+            url: "@Url.Action("GetLabel","Room")",
+            id: "CODE_NBR",
+            text: "CODE_NAME"
+        });
+    }
+    //添加房间，批量
+    function addRoom() {
+
+        var dormName = $("#dormnbr").val();
+
+        if (dormName.trim() == "") {
+            return;
+        }
+
+        var reg = new RegExp();
+        //reg = /\d{1,4}[-]\d{1,4}/;
+        //var c = reg.test(dormName);
+        reg=/(.+)\d+-\1\d+/;
+        var c = reg.test(dormName);
+        if (c == true) {
+            var reg2 = new RegExp();
+            reg2=/^\D+/;
+            reg3=/\d+/;
+            var g=dormName.match(reg2);
+            if (g==null) {
+                g="";
+            }else{
+                g=g[0];
+            }
+            dormName=dormName.replace(new RegExp(g,"g"), "");
+            var arr = dormName.split("-");
+            if (arr.length==2) {
+                var oldarr="";
+                var old="";
+                $(".dormName").each(function () {
+                    old += $(this)[0].innerText;
+                })
+                if (old.indexOf('室')>0) {
+                    oldarr = old.split('室');
+                }
+                //var newarr= arr.filter(key => !oldarr.includes(key));
+
+                if (arr[0] < arr[1]) {
+                    var num = arr[1] - arr[0];
+                    if (num > 100) {
+                        $.modalMsg("一次加入过多!", "warning");
+                        return;
+                    }
+                    var newstr="";
+                    for (var i = arr[0]; i <= arr[1]; i++) {
+                        newstr +=g+ i + "室";
+                    }
+                    if (newstr.indexOf('室')>0) {
+
+                        newstr=newstr.substring(0,newstr.length-1);
+                        var newstrarr = newstr.split('室');
+                        //$("#FLOOR_NBR").val(newstrarr[0].substring(0,newstrarr[0].length-2));
+                        //var reg3 = new RegExp();
+                        //reg3=/\D/;
+                        //if (reg3.test($("#FLOOR_NBR").val())) {
+                        //    $("#FLOOR_NBR").val("");
+                        //}
+                    }
+                    if (oldarr!="") {
+                        var result= newstrarr.filter(key => !oldarr.includes(key));//新数组
+
+                        for (var i = 0; i <= result.length-1; i++) {
+                            $(".dormList").append("<label class='dormName'>" + result[i] + "室<span class='minus glyphicon glyphicon-minus'></span></label>");
+                        }
+                    }
+                    else {
+                        for (var i = 0; i <= newstrarr.length-1; i++) {
+                            $(".dormList").append("<label class='dormName'>" + newstrarr[i] + "室<span class='minus glyphicon glyphicon-minus'></span></label>");
+                        }
+                    }
+
+                } else {
+                    $.modalMsg("输入不合法!", "warning");
+                }
+            }
+        } else {
+
+            var old="";
+            $(".dormName").each(function () {
+                old += $(this)[0].innerText;
+            })
+
+            if (old.indexOf('室')>0) {
+                var oldarr = old.split('室');
+                if (contains(oldarr,dormName)) {
+                    return;
+                }
+            }
+            //$("#FLOOR_NBR").val(dormName.substring(0,dormName.length-2));
+            //var reg3 = new RegExp();
+            //reg3=/\D/;
+            //if (reg3.test($("#FLOOR_NBR").val())) {
+            //    $("#FLOOR_NBR").val("");
+            //}
+            var dormName2 = dormName + "室";
+            $(".dormList").append("<label class='dormName'>" + dormName2 + "<span class='minus glyphicon glyphicon-minus'></span></label>");
+        }
+
+        $(".minus").on("click", function () {
+            $(this).parent().remove();
+        });
+    }
+    function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+            if (arr[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+    function addBedding() {
+
+        var beddingName = $("#beddingName").val();
+        var beddingCount = $("#beddingCount").val();
+
+        if (beddingName.trim() == "" || beddingCount.trim() == "") {
+            return;
+        }
+        var reg = new RegExp("^[0-9]*$");
+        if (!reg.test(beddingCount)) {
+            $.modalMsg("数量为数字!", "warning");
+            return;
+        }
+
+        $("#beddingList").append("<tr class='beddingTr'><td class='formvalue beddingA'>" + beddingName + "</td><td class='beddingB'>" + beddingCount + "</td><td><span class='minusBedding glyphicon glyphicon-minus'></span></td></tr>");
+        $(".minusBedding").on("click", function () {
+            $(this).parent().parent().remove();
+        });
+    }
+    function submitForm() {
+
+        $("#dormtype").val();
+        var dormName = "";
+        $(".dormName").each(function (i) {
+            dormName += $(".dormName").eq(i).text();
+        });
+        $("#DORM_NBR").val(dormName);
+        if ($("#DORM_NBR").val() == "") {
+            $.modalMsg("请输入房间名称！", "warning");
+            return;
+        }
+
+        var W = $("input[name=BEDSIZE_W]").val().trim();
+        var L = $("input[name=BEDSIZE_L]").val().trim();
+        if (W != "" && L != "") {
+            $("#BEDSIZE").val(W + "*" + L)
+        }
+        var bedding = "";
+        $(".beddingTr").each(function (i) {
+            bedding += $(".beddingA").eq(i).text() + "*" + $(".beddingB").eq(i).text() + ";";
+        });
+
+        $("#BEDDING").val(bedding);
+        testimgpath();
+        if ($("input[id='AIRCONDITION']").is(':checked')) {
+            $("#AIRCONDITION_CONFIG").val("1");
+        } else {
+            $("#AIRCONDITION_CONFIG").val("0");
+        }
+
+        if ($("input[id='ENABLE']").is(':checked')) {
+            $("#ENABLE_FLAG").val("1");
+        } else {
+            $("#ENABLE_FLAG").val("0");
+        }
+        if (!$('#form1').formValid()) {
+            return false;
+        }
+        $.submitForm({
+            url: "@Url.Action("SubmitForm","Room")",
+            param: $("#form1").formSerialize(),
+            success: function () {
+                $.currentWindow().$("#gridList").trigger("reloadGrid");
+            }
+        });
+    };
+    function testimgpath() {
+        var img_name_fxt = "";
+        $("input[name='imgsave_fxt']")
+            .each(function () {
+                img_name_fxt = img_name_fxt + $(this).val() + ";";
+            });
+        img_name_fxt = img_name_fxt == "" ? ";" : img_name_fxt;
+        $("#FLOORPLAN").val(img_name_fxt);
+        var img_name_bjt = "";
+        $("input[name='imgsave_bjt']")
+             .each(function () {
+                 img_name_bjt = img_name_bjt + $(this).val() + ";";
+             });
+        img_name_bjt = img_name_bjt == "" ? ";" : img_name_bjt;
+        $("#LAYOUT_MAP").val(img_name_bjt);
+    }
+</script>
+<form id="form1">
+    <div style="margin-left: 10px; margin-right: 10px; margin-top: 10px;">
+        <div style="margin-right: 30px; padding-top: 20px;">
+            <div class="col-md-12 column">
+                <div class="row clearfix borderBottom">
+                    <div class="col-md-4 column text-center OrangeColor fontSize16">
+                        填写房间名称
+                    </div>
+                    <div class="col-md-8 column borderLeft text-center OrangeColor fontSize16">
+                        填写房间属性
+                    </div>
+                </div>
+                <div class="row clearfix borderBottom">
+                    <div class="col-md-4 column">
+                        <div class="dormList">
+                            @*<label class="dormName">101室<span class="minus glyphicon glyphicon-minus"></span></label>*@
+                        </div>
+                        <input id="dormnbr" name="dormnbr" type="text" class="form-control" placeholder="请输入房间名称“101”或“101-103”" />
+                        <label>注释1：若是连续房间号可加“-”，实例：101-113&nbsp&nbsp&nbsp</label>
+                        <a class="btn btn-primary" onclick="addRoom()"><span class="glyphicon glyphicon-plus"></span></a>
+
+                        @*<label>注释2：楼层由房间号自动生成，如201楼层为2;1011楼层为10</label>*@
+                        <input type="hidden" value="" id="DORM_NBR" name="DORM_NBR" />
+                        @*<table class="form">
+                                <tr>
+                                    <th class="formTitle">
+                                        楼层：
+                                    </th>
+                                    <td class="formValue"><input id="AREA" name="AREA" type="text" class="form-control required digits" placeholder="请输入数字" /></td>
+                                    <td></td>
+                                </tr>
+                            </table>*@
+                    </div>
+                    <div class="col-md-8 column borderLeft ">
+                        <table class="form table_room">
+                            @*<tr>
+                                <th class="formTitle">所属楼层：</th>
+                                <td class="formValue">
+                                    <input id="FLOOR_NBR" name="FLOOR_NBR" type="text" class="form-control required digits" placeholder="请输入数字" />
+                                </td>
+                            </tr>*@
+                            <tr>
+                                <th class="formTitle">所属楼栋：</th>
+                                <td class="formValue">
+                                    <select id="CAMPUS_ID" name="CAMPUS_ID" class="form-control required">
+                                        <option value="">全部校区</option>
+                                    </select>
+                                </td>
+                                <td class="formValue">
+                                    <select id="AREA_ID" name="AREA_ID" class="form-control required">
+                                        <option value="">==全部生活区==</option>
+                                    </select>
+                                </td>
+                                <td class="formValue">
+                                    <select id="BUILDING_ID" name="BUILDING_ID" class="form-control required">
+                                        <option value="">全部楼栋</option>
+                                    </select>
+                                </td>
+                                <td class="formValue">
+                                    <select id="FLOOR_NBR" name="FLOOR_NBR" class="form-control" style="height:30px">
+                                        <option value="-1">自动生成楼层</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">所属用途：</th>
+                                <td class="formValue">
+                                    <select id="PURPOSE" name="PURPOSE" class="form-control required">
+                                        @*<option value="">==请选择==</option>*@
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">所属类型：</th>
+                                <td class="formValue">
+                                    <select id="DORM_TYPE" name="DORM_TYPE" class="form-control required">
+                                        @*<option value="">==请选择==</option>*@
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">所属布局：</th>
+                                <td class="formValue">
+                                    <select id="LAYOUT" name="LAYOUT" class="form-control required">
+                                        @*<option value="">==请选择==</option>*@
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">所属标签：</th>
+                                <td class="formValue">
+                                    <select id="LABEL" name="LABEL" class="form-control required">
+                                        @*<option value="">==请选择==</option>*@
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr id="gender" style="display:none">
+                                <th class="formTitle">居住条件：</th>
+                                <td class="formValue">
+                                    <input id="LIVING_CONDITION" name="LIVING_CONDITION" type="text" class="form-control required digits" placeholder="根据楼栋信息生成" disabled="disabled" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                                    面积：
+                                </th>
+                                <td class="formValue" id="formValue">
+                                    <input id="AREA" name="AREA" type="text" class="form-control required digits" placeholder="请输入数字" />
+                                </td>
+                                <td><label class="OrangeColor">平米</label></td>
+                            </tr>
+
+                            <tr>
+                                <th class="formTitle">床位大小：</th>
+                                <td class="formValue" id="th_bud">
+                                    <input name="BEDSIZE_W" type="text" class="form-control required digits" placeholder="请输入数字" />
+                                </td>
+                                <td><label class="OrangeColor"> cm 宽</label></td>
+                                <td class="formValue"><input name="BEDSIZE_L" type="text" class="form-control required digits" placeholder="请输入数字" /></td>
+                                <td>
+                                    <label class="OrangeColor"> cm 长</label>
+                                    <input type="hidden" value="0" id="BEDSIZE" name="BEDSIZE" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">卧具：</th>
+                                <td>
+                                    <table class="form" id="beddingList" style="width:250px;"></table>
+                                    <div>
+                                        <table class="form" style="width:250px;">
+                                            <tr style="border-bottom: none;">
+                                                <td><input id="beddingName" class="form-control" placeholder="卧具名" /></td>
+                                                <td class="text-center gray">—</td>
+                                                <td class="formValue"><input id="beddingCount" class="form-control" placeholder="数量" /></td>
+                                                <td style="padding-left: 10px;"><a class="btn btn-primary" onclick="addBedding()"><span class="glyphicon glyphicon-plus"></span></a></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <input type="hidden" id="BEDDING" name="BEDDING" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">房型图：</th>
+                                <td class="formValue" id="th_bud" colspan="2">
+                                    <img id="addimg_fxt" src="~/Content/img/room08.png" />
+                                    <input type="file" accept="image/jpeg,image/png" name="logo_fxt" id="file_fxt" style="display:none;">
+                                    <input type="hidden" id="FLOORPLAN" name="FLOORPLAN" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">布局图：</th>
+                                <td class="formValue" id="th_bud" colspan="2">
+                                    <img id="addimg_bjt" src="~/Content/img/room08.png" />
+                                    <input type="file" accept="image/jpeg,image/png" name="logo_bjt" id="file_bjt" style="display:none;">
+                                    <input type="hidden" id="LAYOUT_MAP" name="LAYOUT_MAP" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle" valign="top" style="padding-top: 5px;">
+                                    费用：
+                                </th>
+                                <td class="formValue" id="formValue">
+                                    <input id="PRICE" name="PRICE" type="text" class="form-control required digits" placeholder="请输入数字" />
+                                </td>
+                                <td><label class="OrangeColor">元/床/学年</label></td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">空调配备：</th>
+                                <td class="formValue" style="padding-top: 1px;">
+                                    <div class="ckbox">
+                                        <input readonly id="AIRCONDITION" name="AIRCONDITION" type="checkbox" checked><label for="AIRCONDITION">有</label>
+                                    </div>
+                                    <input type="hidden" value="0" id="AIRCONDITION_CONFIG" name="AIRCONDITION_CONFIG" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="formTitle">是否启用：</th>
+                                <td class="formValue" style="padding-top: 1px;">
+                                    <div class="ckbox">
+                                        <input readonly id="ENABLE" name="ENABLE" type="checkbox" checked><label for="ENABLE">启用</label>
+                                    </div>
+                                    <input type="hidden" value="0" id="ENABLE_FLAG" name="ENABLE_FLAG" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    //图片操作
+    $(function () {
+        GetImgUp();
+    });
+
+    function GetImgUp() {
+        var ServerImgUrl = 'http://120.26.168.69:888/img.aspx';
+        bingimg_fxt();
+        bingimg_bjt();
+        $('input[name=logo_fxt]').on('change', function () {
+
+            if (this.files[0].size > 5 * 1024 * 1024) {
+                $.modalMsg("图片不能大于5M！", "warning");
+                return false;
+            }
+            lrz(this.files[0], { width: 300, quality: 0.5 })
+                .then(function (rst) {
+                    var method = "/" + areaName + "/AreaManage/Area/upload";
+                    $.post(method, { img: rst.base64 }, function (data) {
+                        if (data.success) {
+                            //alert(data.filenameurl);
+                            //阿里云服务图片地址
+                            var srcurl = ServerImgUrl + "?img=" + data.filenameurl;//图片完整路
+                            var imageid = data.imageid;
+                            var divHtml = "<div class=\"upimg\" id=\"" + data.imageid + "\"><div class=\"expbtn\"  \"><input type=\"text\"  name=\"imgsave_fxt\"  value=\"" + data.filenameurl + "\"    style=\"display:none;\"/><a href=\"javascript:void(0);\"></a></div><a href=\"javascript:void(0);\" class=\"big\"><img style=\"height: 100px;width: 100px\" src=\""
+                                + srcurl
+                                + "\"></a>"
+                                + "<a href=\"javascript:;\" onclick=\"delimg_fxt('" + data.imageid + "')\"  class=\"Del\"><img onmousemove=\"changpic($(this))\" onmouseout=\"reduction($(this))\" src=\"/BasicDataCenter/Content/img/pink237.png\"></a></div>";
+                            $("#addimg_fxt").before(divHtml);
+                            CheckPicCount_fxt();
+                        }
+                        else {
+                            $.modalMsg("系统繁忙,稍后再试！", "warning");
+                        }
+                    });
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+        });
+        $('input[name=logo_bjt]').on('change', function () {
+            if (this.files[0].size > 5 * 1024 * 1024) {
+                $.modalMsg("图片不能大于5M！", "warning");
+                return false;
+            }
+            lrz(this.files[0], { width: 300, quality: 0.5 })
+                .then(function (rst) {
+                    var method = "/" + areaName + "/AreaManage/Area/upload";
+                    $.post(method, { img: rst.base64 }, function (data) {
+                        if (data.success) {
+                            //alert(data.filenameurl);
+                            //阿里云服务图片地址
+                            var srcurl = ServerImgUrl + "?img=" + data.filenameurl;//图片完整路
+                            var imageid = data.imageid;
+                            var divHtml = "<div class=\"upimg\" id=\"" + data.imageid + "\"><div class=\"expbtn\"  \"><input type=\"text\"  name=\"imgsave_bjt\"  value=\"" + data.filenameurl + "\"    style=\"display:none;\"/><a href=\"javascript:void(0);\"></a></div><a href=\"javascript:void(0);\" class=\"big\"><img style=\"height: 100px;width: 100px\" src=\""
+                                + srcurl
+                                + "\"></a>"
+                                + "<a href=\"javascript:;\" onclick=\"delimg_bjt('" + data.imageid + "')\"  class=\"Del\"><img onmousemove=\"changpic($(this))\" onmouseout=\"reduction($(this))\" src=\"/BasicDataCenter/Content/img/pink237.png\"></a></div>";
+                            $("#addimg_bjt").before(divHtml);
+                            CheckPicCount_bjt();
+                        }
+                        else {
+                            $.modalMsg("系统繁忙,稍后再试！", "warning");
+                        }
+                    });
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+        });
+    }
+    function delimg_fxt(id) {
+        $('input[name=logo_fxt]').val("");
+        $("#" + id).remove();
+        CheckPicCount_fxt();
+    }
+    function delimg_bjt(id) {
+        $('input[name=logo_bjt]').val("");
+        $("#" + id).remove();
+        CheckPicCount_bjt();
+    }
+    function bingimg_fxt() {
+        $('#addimg_fxt').click(function () {
+            $('#file_fxt').click();
+        });
+    }
+    function bingimg_bjt() {
+        $('#addimg_bjt').click(function () {
+            $('#file_bjt').click();
+        });
+    }
+    //图片计数,最大1张
+    function CheckPicCount_fxt() {
+        //房型图
+        var count_fxt = 0;
+        $("input[name='imgsave_fxt']").each(function () {
+            count_fxt++;
+        });
+        if (count_fxt >= 1) {
+            $("#addimg_fxt").remove();
+        }
+        else {
+            var add = $("#addimg_fxt");
+            if (add.length > 0) {
+                return false;
+            }
+            else {
+                $("#file_fxt").before('<img id="addimg_fxt" src="/BasicDataCenter/Content/img/room08.png"/>');
+                bingimg_fxt();
+            }
+        }
+    }
+    function CheckPicCount_bjt() {
+        //布局图
+        var count_bjt = 0;
+        $("input[name='imgsave_bjt']").each(function () {
+            count_bjt++;
+        });
+
+        if (count_bjt >= 1) {
+            $("#addimg_bjt").remove();
+        }
+        else {
+            var add = $("#addimg_bjt");
+            if (add.length > 0) {
+                return false;
+            }
+            else {
+                $("#file_bjt").before('<img id="addimg_bjt" src="/BasicDataCenter/Content/img/room08.png"/>');
+                bingimg_bjt();
+            }
+        }
+    }
+    //移动改变显示图片
+    function changpic(obj) {
+        obj.attr("src", "/BasicDataCenter/Content/img/pink240.png");
+    }
+    function reduction(obj) {
+        obj.attr("src", "/BasicDataCenter/Content/img/pink237.png");
+    }
+</script>
