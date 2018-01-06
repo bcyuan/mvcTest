@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
     <div>
     
-        <asp:Button ID="Button1" runat="server" onclick="Button1_Click" 
+        <asp:Button ID="Button1" runat="server" onclick="Button2_Click" 
             Text="Export To Excel" />
     
     </div>
