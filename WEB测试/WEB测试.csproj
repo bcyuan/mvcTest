@@ -102,9 +102,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Applibrary导入导出\导出.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\gongfang logo.svg" />
+    <Content Include="Content\jquery.cookie.js" />
     <Content Include="Content\jQuery.print.min.js" />
     <Content Include="Content\jquery.validate.min.js" />
     <Content Include="Content\layui\css\global.css" />
@@ -221,7 +223,8 @@
     <Content Include="Libs\AppLibrary.dll" />
     <Content Include="Libs\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Libs\NPOI.dll" />
-    <Content Include="NPOI导出\Default.aspx" />
+    <Content Include="NPOI导出导入\Default.aspx" />
+    <Content Include="NPOI导出导入\导入数据.aspx" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\css\bootstrap-theme.css" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\css\bootstrap-theme.min.css" />
     <Content Include="Scripts\bootstrap-3.3.7-dist\css\bootstrap.css" />
@@ -257,7 +260,9 @@
     <Content Include="测试打印.aspx" />
     <Content Include="测试自制树表.aspx" />
     <Content Include="演示slipHover.aspx" />
+    <Content Include="缓存\缓存.aspx" />
     <Content Include="自己的格式.aspx" />
+    <Content Include="NPOI导出导入\试题上传.xls" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -299,6 +304,13 @@
     <Content Include="ViewPage1.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applibrary导入导出\导出.aspx.cs">
+      <DependentUpon>导出.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Applibrary导入导出\导出.aspx.designer.cs">
+      <DependentUpon>导出.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="data\bb.ashx.cs">
@@ -318,9 +330,16 @@
     </Compile>
     <Compile Include="Models\stu.cs" />
     <Compile Include="MyNameTransfom.cs" />
-    <Compile Include="NPOI导出\Default.aspx.cs">
+    <Compile Include="NPOI导出导入\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NPOI导出导入\导入数据.aspx.cs">
+      <DependentUpon>导入数据.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NPOI导出导入\导入数据.aspx.designer.cs">
+      <DependentUpon>导入数据.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="select2多选.aspx.cs">
@@ -435,6 +454,13 @@
     <Compile Include="演示slipHover.aspx.designer.cs">
       <DependentUpon>演示slipHover.aspx</DependentUpon>
     </Compile>
+    <Compile Include="缓存\缓存.aspx.cs">
+      <DependentUpon>缓存.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="缓存\缓存.aspx.designer.cs">
+      <DependentUpon>缓存.aspx</DependentUpon>
+    </Compile>
     <Compile Include="自己的格式.aspx.cs">
       <DependentUpon>自己的格式.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -464,6 +490,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
+    <Folder Include="Views\Export\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
