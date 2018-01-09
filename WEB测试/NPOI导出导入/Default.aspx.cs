@@ -90,19 +90,59 @@ namespace ExportXlsToDownload
             Response.Clear();
             HSSFWorkbook hssfworkbook = new HSSFWorkbook();
             Sheet sheet1 = hssfworkbook.CreateSheet("Sheet1名称");
-            CellStyle styleCenter = hssfworkbook.CreateCellStyle();
-            styleCenter.Alignment = HorizontalAlignment.CENTER;
-            styleCenter.FillBackgroundColor = HSSFColor.PINK.index;
+            CellStyle style = hssfworkbook.CreateCellStyle();
+            style.Alignment = HorizontalAlignment.CENTER;
+            style.FillBackgroundColor = HSSFColor.PINK.index;
 
             var row0 = sheet1.CreateRow(0).CreateCell(0);
             row0.SetCellValue("This is a Sample");//sheet标题
-            row0.CellStyle = styleCenter;
+            row0.CellStyle = style;
+            var j=17;
+            #region 居中/自动换行
+            CellStyle styleCenter = hssfworkbook.CreateCellStyle();//样式
+            styleCenter.Alignment = NPOI.SS.UserModel.HorizontalAlignment.CENTER;//文字水平对齐方式
+            styleCenter.VerticalAlignment = NPOI.SS.UserModel.VerticalAlignment.CENTER;//文字垂直对齐方式
+            styleCenter.WrapText = true;//自动换行
+
+            sheet1.CreateRow(j).CreateCell(j).CellStyle = styleCenter;
+            var cell17 = sheet1.CreateRow(j).CreateCell(j);
+            var cell172 = sheet1.CreateRow(j).CreateCell(j+1);
+            cell17.CellStyle = styleCenter;
+            cell17.SetCellValue("VLOOKUP函数和“两列同时匹配”的应用,升的网易博客");
+            //cell172.SetCellValue("VLOOKUP函数和“两列同时匹配”的应用,升的网易博客");
+            j++;
+            #endregion
+
+            #region 设置宽高度
+            sheet1.SetColumnWidth(1, 20 * 256);//宽度-每个字符宽度是1/256。 所以20 * 256就是20个字符宽度。
+            var rowwh=sheet1.CreateRow(j);
+            rowwh.HeightInPoints = 50;//高度
+            rowwh.CreateCell(j).SetCellValue("宽高度");
+            j++;
+            #endregion
+
+            #region 自适应宽度+自动换行
+            /*场景：
+                12林学1班
+                12林学1班
+            */
+            CellStyle autoAndWrap = hssfworkbook.CreateCellStyle();//样式
+            autoAndWrap.WrapText = true;//自动换行
+            var rowwhauto = sheet1.CreateRow(j);
+            var cellauto = rowwhauto.CreateCell(j);
+            cellauto.SetCellValue(j + "自适应宽高度自适应宽高度\n自适应宽高度自适应宽高度\n自适应宽高度自适应宽高度");
+            sheet1.AutoSizeColumn(j);
+            cellauto.CellStyle = autoAndWrap;
+            
+            j++;
+            #endregion
 
             #region 设置背景色
             CellStyle style1 = hssfworkbook.CreateCellStyle();
             style1.FillForegroundColor = NPOI.HSSF.Util.HSSFColor.BLUE.index;
             style1.FillPattern = FillPatternType.SOLID_FOREGROUND;
-            sheet1.CreateRow(18).CreateCell(18).CellStyle = style1;
+            sheet1.CreateRow(j).CreateCell(j).CellStyle = style1;
+            j++;
             #endregion
 
             #region 自定义背景色
@@ -112,7 +152,8 @@ namespace ExportXlsToDownload
             CellStyle style2 = hssfworkbook.CreateCellStyle();
             style2.FillPattern = FillPatternType.SOLID_FOREGROUND;
             style2.FillForegroundColor = hssFColor.GetIndex();
-            sheet1.CreateRow(19).CreateCell(19).CellStyle = style2;
+            sheet1.CreateRow(j).CreateCell(j).CellStyle = style2;
+            j++;
             #endregion
 
             #region 设置字体颜色
@@ -120,14 +161,17 @@ namespace ExportXlsToDownload
             Font font1 = hssfworkbook.CreateFont();
             font1.Color = hssFColor.GetIndex();//颜色 
             style3.SetFont(font1);
-            var cell20 = sheet1.CreateRow(20).CreateCell(20);
+            var cell20 = sheet1.CreateRow(j).CreateCell(j);
             cell20.CellStyle = style3;
             cell20.SetCellValue("666666666");
+            j++;
             #endregion
+
+
 
             List<ModelStu> data = StuDaTa.GetData();
             string[] arrthead = { "ID", "name", "age", "pc" };
-            sheet1.AddMergedRegion(new CellRangeAddress(0, 0, 0, arrthead.Length-1));
+            sheet1.AddMergedRegion(new CellRangeAddress(0, 0, 0, arrthead.Length - 1));
             Row row1 = sheet1.CreateRow(1);
             for (int i = 0; i < arrthead.Length; i++)
             {
@@ -135,7 +179,7 @@ namespace ExportXlsToDownload
             }
             for (int i = 0; i < data.Count; i++)
             {
-                Row row = sheet1.CreateRow(i+2);
+                Row row = sheet1.CreateRow(i + 2);
                 var colIndex = 0;
                 row.CreateCell(colIndex++).SetCellValue(data[i].id);
                 row.CreateCell(colIndex++).SetCellValue(data[i].name);
