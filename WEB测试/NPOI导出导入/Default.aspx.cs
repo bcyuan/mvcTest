@@ -121,7 +121,7 @@ namespace ExportXlsToDownload
             j++;
             #endregion
 
-            #region 自适应宽度+自动换行
+            #region 自适应宽度（对中文不友好）+自动换行
             /*场景：
                 12林学1班
                 12林学1班
